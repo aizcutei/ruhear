@@ -1,6 +1,6 @@
 # RUHear
 ---
-A simple crate that allows you to capture <ins>system output audio<ins> (what aRe yoU HEAR).
+A simple crate that allows you to capture <ins>system output audio<ins> (what aRe yoU HEARing).
 
 ## Dependencies
 - On windows and linux: [cpal](https://crates.io/crates/cpal)
@@ -9,26 +9,26 @@ A simple crate that allows you to capture <ins>system output audio<ins> (what aR
 ## Usage
 See examples folder for simple example.
 ```rust
-use ruhear::{Ruhear, AudioBuffers};
+use ruhear::{Ruhear, RUBuffers, RUCallback};
 use std::sync::{Arc, Mutex};
 
 fn main() {
     // Create a callback that will be called every time the audio buffers are ready
-    // AudioBuffers is a multichannel Vec<f32>. Default sampleRate is 48000Hz.
-    let callback = |data: AudioBuffers| {
+    // RUBuffers is a multichannel Vec<f32>. Default sampleRate is 48000Hz.
+    let callback = |data: RUBuffers| {
         println!("{:?}", data);
     };
 
     // Create a Ruhear instance and start capturing audio, put the callback in a mutex and an arc to share it between threads
-    let mut ruhear = Ruhear::new(Arc::new(Mutex::new(Box::new(callback))));
+    let mut ruhear = RUCallback!(callback);
 
     // Start capturing audio
-    ruhear.start().unwrap();
+    ruhear.start();
 
     std::thread::sleep(std::time::Duration::from_secs(5));
 
     // Stop capturing audio
-    ruhear.stop().unwrap();
+    ruhear.stop();
 }
 ```
 ## TODO

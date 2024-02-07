@@ -1,3 +1,5 @@
+use std::sync::{Arc, Mutex};
+
 #[cfg(target_os = "windows")]
 mod windows;
 #[cfg(target_os = "windows")]
@@ -13,4 +15,11 @@ mod linux;
 #[cfg(target_os = "linux")]
 pub use linux::RUHear;
 
-pub type AudioBuffers = Vec<Vec<f32>>;
+pub type RUBuffers = Vec<Vec<f32>>;
+
+#[macro_export]
+macro_rules! RUCallback {
+    ($callback:expr) => {
+        Arc::new(Mutex::new($callback))
+    };
+}

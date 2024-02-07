@@ -1,26 +1,28 @@
+#![allow(dead_code)]
+use anyhow::{anyhow, Result};
 use screencapturekit::{
     cm_sample_buffer::CMSampleBuffer,
     sc_content_filter::{InitParams, SCContentFilter},
     sc_display::SCDisplay,
     sc_error_handler::StreamErrorHandler,
-    sc_output_handler::SCStreamOutputType,
+    sc_output_handler::{SCStreamOutputType, StreamOutput},
     sc_shareable_content::SCShareableContent,
     sc_stream::SCStream,
     sc_stream_configuration::SCStreamConfiguration,
 };
 use std::sync::{Arc, Mutex};
 
-pub type AudioBuffers = Vec<Vec<f32>>;
+type RUBuffers = Vec<Vec<f32>>;
 struct ErrorHandler;
 
 impl StreamErrorHandler for ErrorHandler {
     fn on_error(&self) {
-        panic!("Stream Error!")
+        println!("Stream Error!")
     }
 }
 
 struct OutputHandler {
-    callback: Arc<Mutex<dyn FnMut(AudioBuffers) + Send>>,
+    callback: Arc<Mutex<dyn FnMut(RUBuffers) + Send>>,
 }
 
 impl StreamOutput for OutputHandler {
@@ -41,7 +43,6 @@ impl StreamOutput for OutputHandler {
                 f32_data.push(f32);
             }
             audio_buffers.push(f32_data);
-            // call the callback
         }
         let mut callback = self.callback.lock().unwrap();
         callback(audio_buffers);
@@ -56,14 +57,14 @@ enum RUDevice {
 }
 
 pub struct RUHear {
-    pub callback: Arc<Mutex<dyn FnMut(AudioBuffers) + Send>>,
+    pub callback: Arc<Mutex<dyn FnMut(RUBuffers) + Send>>,
     device_list: Vec<RUDevice>,
     device: Option<RUDevice>,
     stream: Option<SCStream>,
 }
 
 impl RUHear {
-    pub fn new(callback: Arc<Mutex<dyn FnMut(AudioBuffers) + Send>>) -> Self {
+    pub fn new(callback: Arc<Mutex<dyn FnMut(RUBuffers) + Send>>) -> Self {
         let content = SCShareableContent::current();
         let displays = content.displays;
         let display = displays.clone().first().unwrap().to_owned();
@@ -78,11 +79,11 @@ impl RUHear {
         }
     }
 
-    // pub fn set_callback(&mut self, callback: Arc<Mutex<dyn FnMut(AudioBuffers) + Send>>) {
+    // pub fn set_callback(&mut self, callback: Arc<Mutex<dyn FnMut(RUBuffers) + Send>>) {
     //     self.callback = callback;
     // }
 
-    pub fn start(&mut self) {
+    pub fn start(&mut self) -> Result<(), anyhow::Error> {
         let params = match self.device.clone().unwrap() {
             RUDevice::MacosDisplay(display) => InitParams::Display(display),
         };
@@ -99,13 +100,22 @@ impl RUHear {
             callback: self.callback.clone(),
         };
         stream.add_output(output_handler, SCStreamOutputType::Audio);
-        let _ = stream.start_capture();
+        let result = stream.start_capture();
         self.stream = Some(stream);
+        match result {
+            Ok(_) => Ok(()),
+            Err(e) => Err(anyhow::anyhow!(e)),
+        }
     }
 
-    pub fn stop(&mut self) {
+    pub fn stop(&mut self) -> Result<(), anyhow::Error> {
         if let Some(stream) = self.stream.take() {
-            let _ = stream.stop_capture();
+            match stream.stop_capture() {
+                Ok(_) => Ok(()),
+                Err(e) => Err(anyhow::anyhow!(e)),
+            }
+        } else {
+            anyhow::bail!("Stream not found")
         }
     }
 }

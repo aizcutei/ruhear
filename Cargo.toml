@@ -20,3 +20,6 @@ cpal = {version =  "0.15.2"}
 
 [[example]]
 name = "capture"
+
+[[example]]
+name = "error"
