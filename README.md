@@ -1,4 +1,8 @@
 # RUHear
+[![Crates.io](https://img.shields.io/crates/v/ruhear)](https://crates.io/crates/ruhear)
+[![Docs.rs](https://docs.rs/ruhear/badge.svg)](https://docs.rs/ruhear)
+![License](https://img.shields.io/crates/l/ruhear)
+
 A simple crate that allows you to capture <ins>system output audio</ins> (what a**R**e yo**U** **HEAR**ing).
 
 ## Dependencies
