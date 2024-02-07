@@ -1,24 +1,21 @@
-use std::sync::{Arc, Mutex};
+//! Capture audio from the system and send it to a callback function.
+//!
+//! See [examples](https://github.com/aizcutei/ruhear/tree/main/examples) for usage.
 
-#[cfg(target_os = "windows")]
-mod windows;
-#[cfg(target_os = "windows")]
-pub use windows::RUHear;
+#[cfg(not(target_os = "macos"))]
+mod cpal;
+#[cfg(not(target_os = "macos"))]
+pub use cpal::RUHear;
 
 #[cfg(target_os = "macos")]
-mod macos;
+mod screencapturekit;
 #[cfg(target_os = "macos")]
-pub use macos::RUHear;
-
-#[cfg(target_os = "linux")]
-mod linux;
-#[cfg(target_os = "linux")]
-pub use linux::RUHear;
+pub use screencapturekit::RUHear;
 
 pub type RUBuffers = Vec<Vec<f32>>;
 
 #[macro_export]
-macro_rules! RUCallback {
+macro_rules! rucallback {
     ($callback:expr) => {
         Arc::new(Mutex::new($callback))
     };

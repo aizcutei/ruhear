@@ -1,3 +1,4 @@
+#![allow(unused)]
 use anyhow;
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
 use std::sync::{Arc, Mutex};

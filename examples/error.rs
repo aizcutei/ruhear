@@ -1,11 +1,11 @@
-use ruhear::{RUBuffers, RUCallback, RUHear};
+use ruhear::{rucallback, RUBuffers, RUHear};
 use std::sync::{Arc, Mutex};
 
 fn main() {
     let callback = |audio: RUBuffers| {
         println!("{:?}", audio);
     };
-    let callback = RUCallback!(callback);
+    let callback = rucallback!(callback);
     let mut ruhear = RUHear::new(callback.clone());
 
     let result = ruhear.stop();

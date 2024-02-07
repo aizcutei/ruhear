@@ -1,5 +1,5 @@
 #![allow(dead_code)]
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use screencapturekit::{
     cm_sample_buffer::CMSampleBuffer,
     sc_content_filter::{InitParams, SCContentFilter},
@@ -78,10 +78,6 @@ impl RUHear {
             stream: None,
         }
     }
-
-    // pub fn set_callback(&mut self, callback: Arc<Mutex<dyn FnMut(RUBuffers) + Send>>) {
-    //     self.callback = callback;
-    // }
 
     pub fn start(&mut self) -> Result<(), anyhow::Error> {
         let params = match self.device.clone().unwrap() {
