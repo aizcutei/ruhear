@@ -4,6 +4,7 @@ use screencapturekit::{
     sc_display::SCDisplay,
     sc_error_handler::StreamErrorHandler,
     sc_output_handler::SCStreamOutputType,
+    sc_output_handler::StreamOutput,
     sc_shareable_content::SCShareableContent,
     sc_stream::SCStream,
     sc_stream_configuration::SCStreamConfiguration,
