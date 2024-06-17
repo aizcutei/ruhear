@@ -6,7 +6,7 @@ authors = ["aizcutei <aiz.cutei@gmail.com>"]
 description = "A library for capturing audio from the system."
 license = "Apache-2.0"
 
-repository = "https://www.github.com/aizcutei/ruhear"
+repository = "https://github.com/aizcutei/ruhear"
 documentation = "https://docs.rs/ruhear"
 keywords = ["audio", "capture"]
 categories = ["multimedia::audio"]
