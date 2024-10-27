@@ -5,15 +5,18 @@
 
 A simple crate that allows you to capture <ins>system output audio</ins> (what a**R**e yo**U** **HEAR**ing).
 
+## ⚠️ Apple changed some API in MacOS 15, so this crate may not work on MacOS 15 or later. Somehow you can try nightly version of this crate to see if it works.
+
+
 ## Dependencies
 - On windows and linux: [cpal](https://crates.io/crates/cpal)
-- On macos: [screencapturekit](https://crates.io/crates/screencapturekit)
+- On macos: [screencapturekit](https://crates.io/crates/screencapturekit), [cidre](https://github.com/yury/cidre)
 - No plan for other platforms yet
 
 ## Usage
 See examples folder for simple example.
 ```rust
-use ruhear::{Ruhear, RUBuffers, RUCallback};
+use ruhear::{Ruhear, RUBuffers, rucallback};
 
 fn main() {
     // Create a callback that will be called every time the audio buffers are ready
@@ -23,7 +26,7 @@ fn main() {
     };
 
     // Create a Ruhear instance and start capturing audio, use RUCallback! macro to create a thread-safe callback
-    let mut ruhear = RUCallback!(callback);
+    let mut ruhear = rucallback!(callback);
 
     // Start capturing audio
     ruhear.start();
