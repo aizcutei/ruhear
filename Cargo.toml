@@ -30,7 +30,7 @@ cidre = { git = "https://github.com/yury/cidre/", features = [
     "sc",
     "vt",
 ], default-features = false }
-futures = "0.3.31"
+futures = "0.3"
 
 [target.'cfg(not(target_os = "macos"))'.dependencies]
 cpal = "0.15.2"
