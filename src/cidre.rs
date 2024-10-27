@@ -12,6 +12,7 @@ use std::sync::{Arc, Mutex};
 
 type RUBuffers = Vec<Vec<f32>>;
 
+#[repr(C)]
 struct OutputHandlerInner {
     callback: Arc<Mutex<dyn FnMut(RUBuffers) + Send>>,
 }
@@ -60,7 +61,6 @@ impl OutputImpl for OutputHandler {
         sample_buf: &mut cm::SampleBuf,
         kind: sc::OutputType,
     ) {
-        println!("impl_stream_did_output_sample_buf");
         match kind {
             sc::OutputType::Screen => {}
             sc::OutputType::Audio => self.inner_mut().process(sample_buf),
@@ -72,6 +72,7 @@ impl OutputImpl for OutputHandler {
 pub struct RUHear {
     pub callback: Arc<Mutex<dyn FnMut(RUBuffers) + Send>>,
     stream: Option<Retained<cidre::sc::Stream>>,
+    _handler: Option<Retained<OutputHandler>>,
 }
 
 impl RUHear {
@@ -102,6 +103,7 @@ impl RUHear {
             Self {
                 callback,
                 stream: Some(stream),
+                _handler: Some(handler),
             }
         } else {
             panic!("Unable to find displays!")
