@@ -17,7 +17,20 @@ categories = ["multimedia::audio"]
 anyhow = "1.0.79"
 
 [target.'cfg(target_os = "macos")'.dependencies]
-screencapturekit = "0.2"
+screencapturekit = "0.2.8"
+cidre = { git = "https://github.com/yury/cidre/", features = [
+    "blocks",
+    "async",
+    "dispatch",
+    "av",
+    "cf",
+    "cat",
+    "cm",
+    "ns",
+    "sc",
+    "vt",
+], default-features = false }
+futures = "0.3.31"
 
 [target.'cfg(not(target_os = "macos"))'.dependencies]
 cpal = "0.15.2"
