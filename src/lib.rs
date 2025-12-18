@@ -7,15 +7,15 @@ mod cpal;
 #[cfg(not(target_os = "macos"))]
 pub use cpal::RUHear;
 
-// #[cfg(target_os = "macos")]
-// mod screencapturekit;
-// #[cfg(target_os = "macos")]
-// pub use screencapturekit::RUHear;
+#[cfg(target_os = "macos")]
+mod screencapturekit;
+#[cfg(target_os = "macos")]
+pub use screencapturekit::RUHear;
 
-#[cfg(target_os = "macos")]
-mod cidre;
-#[cfg(target_os = "macos")]
-pub use cidre::RUHear;
+// #[cfg(target_os = "macos")]
+// mod cidre;
+// #[cfg(target_os = "macos")]
+// pub use cidre::RUHear;
 
 pub type RUBuffers = Vec<Vec<f32>>;
 

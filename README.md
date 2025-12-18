@@ -5,12 +5,9 @@
 
 A simple crate that allows you to capture <ins>system output audio</ins> (what a**R**e yo**U** **HEAR**ing).
 
-## ⚠️ Apple changed some API in MacOS 15, so this crate may not work on MacOS 15 or later. Somehow you can try nightly version of this crate to see if it works.
-
-
 ## Dependencies
 - On windows and linux: [cpal](https://crates.io/crates/cpal)
-- On macos: [screencapturekit](https://crates.io/crates/screencapturekit), [cidre](https://github.com/yury/cidre)
+- On macos: [screencapturekit](https://crates.io/crates/screencapturekit)
 - No plan for other platforms yet
 
 ## Usage
